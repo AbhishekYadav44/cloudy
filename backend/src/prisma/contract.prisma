@@ -1,21 +1,44 @@
 // use prisma-8
+
 enum UserRole {
   owner
-  amdin
+  admin
   user
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String
-  name      String
-  password  String
-  rootDirId String
-  role      UserRole @default(user)
-  deleted   Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  username     String
+  name         String
+  password     String
+
+  rootFolderId Int?     @unique
+  rootFolder   Folder?  @relation("userRootFolder", fields: [rootFolderId], references: [id])
+
+  folders      Folder[] @relation("UserFolders")
+
+  maxStorage   BigInt   @default(5368709120)
+  role         UserRole @default(user)
+  deleted      Boolean  @default(false)
+
+  createdAt    DateTime @default(now())
 }
 
+model Folder {
+  id             Int      @id @default(autoincrement())
+  name           String
 
+  userId         Int
+  user           User     @relation("UserFolders", fields: [userId], references: [id])
+
+  parentFolderId Int?
+  parentFolder   Folder?  @relation("FolderHierarchy", fields: [parentFolderId], references: [id])
+  childFolders   Folder[] @relation("FolderHierarchy")
+
+  rootForUser    User?    @relation("userRootFolder")
+
+  size           BigInt   @default(0)
+
+  createdAt      DateTime @default(now())
+}
