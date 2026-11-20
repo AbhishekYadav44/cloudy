@@ -1,0 +1,21 @@
+// use prisma-8
+enum UserRole {
+  owner
+  amdin
+  user
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String
+  name      String
+  password  String
+  rootDirId String
+  role      UserRole @default(user)
+  deleted   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+
