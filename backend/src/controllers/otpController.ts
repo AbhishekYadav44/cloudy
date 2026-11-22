@@ -22,3 +22,19 @@ export async function sendOtpController(req: Request, res: Response) {
     })
 
 }
+
+export async function verifyOtp(req: Request, res: Response) {
+    const { email, otp } = req.body;
+
+    const otpdata = await db.orm.public.Otp.where(email).first() // first returns 1st entry of query like 1st otp 
+
+    if (!otpdata) {
+        return res.json({
+            message: "invalid otp!"
+        })
+    }
+
+    return res.json({
+        message : "otp verified"
+    })
+}
