@@ -1,8 +1,10 @@
 
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { db } from "../prisma/db.js";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
 
+const jwt_secret = process.env.JWT_SECRET!
 export async function signupController(req: Request, res: Response) {
 
     const { name, email, username, password, otp } = req.body;
@@ -12,7 +14,7 @@ export async function signupController(req: Request, res: Response) {
         })
     }
 
-    const verifyOtp = await db.orm.public.Otp.where({ email , verified : true }).first();
+    const verifyOtp = await db.orm.public.Otp.where({ email, verified: true }).first();
     if (!verifyOtp) {
         return res.json({
             message: "otp is not valid!"
@@ -45,7 +47,7 @@ export async function signupController(req: Request, res: Response) {
         await db.orm.public.Otp.where({ email }).delete();
 
         return res.json({
-            message : "user succesfully registered!"
+            message: "user succesfully registered!"
         })
 
     } catch (e) {
@@ -57,8 +59,45 @@ export async function signupController(req: Request, res: Response) {
 
 
 }
-export async function loginController(req: Request, res: Response) {
 
-    console.log('login cotroller')
+export async function loginController(req: Request, res: Response, next: NextFunction) {
+    try {
+        const { email, password } = req.body;
 
+        if (!email || !password) {
+            return res.status(400).json({
+                message: "Email and password are required!"
+            });
+        }
+
+        const user = await db.orm.public.User.where({ email }).first();
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found. Please register first."
+            });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                message: "Invalid email or password!"
+            });
+        }
+
+        const token = jwt.sign(
+            { userId: user.id },
+            jwt_secret,
+            { expiresIn: "15m" }
+        );
+
+        return res.status(200).json({
+            message: "User logged in successfully!",
+            token
+        });
+
+    } catch (e) {
+        next(e);
+    }
 }
