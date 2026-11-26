@@ -2,7 +2,7 @@ import nodeMailer from 'nodemailer';
 import type { Request, Response } from 'express';
 import { randomInt } from 'node:crypto';
 import bcrypt from 'bcrypt';
-import { db } from '../prisma/db';
+import { db } from '../prisma/db.js';
 import nodemailer from 'nodemailer';
 
 export async function sendOtp(email: string) {

@@ -1,11 +1,13 @@
 import express from 'express';
-import { signupController, loginController } from '../controllers/userControllers';
-import { sendOtpController } from '../controllers/otpController';
+import { sendOtpController, verifyOtp } from '../controllers/otpController.js';
 
 
 const router = express.Router();
 
-router.post('/send-otp', sendOtpController);
-// router.post('/verify-otp', verifyOtpController);
+router.post('/send-otp', (req, res, next) => {
+    console.log("Send OTP route reached");
+    next();
+}, sendOtpController);
+router.post('/verify-otp', verifyOtp);
 
 export default router;

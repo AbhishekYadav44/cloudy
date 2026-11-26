@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "npx tsc -b && node dist/app.js",
+    "dev": "npx tsc -b && node dist/src/app.js",
     "contract:emit": "prisma contract emit"
   },
   "dependencies": {
