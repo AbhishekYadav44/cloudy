@@ -23,7 +23,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'df4bd656e72f88877382f9b5036ef33520967087eea2b3f9da2627cd48723a97'>;
+  StorageHashBase<'9e586d6c47eba8cad0ca10567a82b8f5dd0db0c89f72496f5fb092e6cd0db0e0'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -347,6 +347,7 @@ export namespace Models {
     expiresAt: FieldOutputTypes['public']['Otp']['expiresAt'];
     id: FieldOutputTypes['public']['Otp']['id'];
     otpHash: FieldOutputTypes['public']['Otp']['otpHash'];
+    verified: FieldOutputTypes['public']['Otp']['verified'];
     readonly [RelationKeys]?: never;
   };
   export type public_User = {
@@ -521,6 +522,16 @@ type ContractBase = Omit<
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly verified: {
+                  readonly dataType: 'pg/bool';
+                  readonly codecId: 'pg/bool@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/bool@1', false>;
+                  };
                   readonly many: false;
                 };
               };
@@ -773,6 +784,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly verified: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
+              };
             };
             readonly relations: Record<string, never>;
             readonly storage: {
@@ -784,6 +799,7 @@ type ContractBase = Omit<
                 readonly expiresAt: { readonly column: 'expiresAt' };
                 readonly id: { readonly column: 'id' };
                 readonly otpHash: { readonly column: 'otpHash' };
+                readonly verified: { readonly column: 'verified' };
               };
             };
           };

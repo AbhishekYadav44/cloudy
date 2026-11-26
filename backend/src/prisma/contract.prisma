@@ -34,7 +34,7 @@ model Folder {
 
     parentFolderId Int?
     parentFolder   Folder?  @relation("FolderHierarchy", fields: [parentFolderId], references: [id])
-    childFolders   Folder[] @relation("FolderHierarchy")
+    childFolders   Folder[] @relation("FolderHierarchy")   
 
     rootForUser User? @relation("userRootFolder")
 
@@ -49,4 +49,5 @@ model Otp {
     otpHash   String
     expiresAt DateTime
     createdAt DateTime @default(now())
+    verified  Boolean  @default(false)
 }

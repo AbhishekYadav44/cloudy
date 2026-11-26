@@ -220,6 +220,13 @@
                   "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
+              },
+              "verified": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
               }
             },
             "relations": {},
@@ -239,6 +246,9 @@
                 },
                 "otpHash": {
                   "column": "otpHash"
+                },
+                "verified": {
+                  "column": "verified"
                 }
               },
               "namespaceId": "public",
@@ -559,6 +569,15 @@
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
                   "nullable": false
+                },
+                "verified": {
+                  "codecId": "pg/bool@1",
+                  "dataType": "pg/bool",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nullable": false
                 }
               },
               "foreignKeys": [],
@@ -723,7 +742,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "df4bd656e72f88877382f9b5036ef33520967087eea2b3f9da2627cd48723a97"
+    "storageHash": "9e586d6c47eba8cad0ca10567a82b8f5dd0db0c89f72496f5fb092e6cd0db0e0"
   },
   "capabilities": {
     "postgres": {
